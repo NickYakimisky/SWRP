@@ -1,0 +1,24 @@
+@using Sandbox;
+@using Sandbox.UI;
+
+@namespace SWRP
+@inherits RootPanel
+@attribute [StyleSheet("ui/HUD.scss")]
+
+<root class="friend-name @FriendClasses()">@friend.Name hi there</root>
+
+@code
+{
+	public Sandbox.Friend friend { get; set; }
+
+	string FriendClasses()
+	{
+		if (friend.IsMe)
+			return "is-me";
+
+		if (friend.IsFriend)
+			return "is-friend";
+
+		return "";
+	}
+}

@@ -1,0 +1,5 @@
+c:\users\nicky\documents\s&box projects\swrp\code\obj\Debug\swrp.csproj.AssemblyReference.cache
+c:\users\nicky\documents\s&box projects\swrp\code\obj\Debug\swrp.GeneratedMSBuildEditorConfig.editorconfig
+c:\users\nicky\documents\s&box projects\swrp\code\obj\Debug\swrp.AssemblyInfoInputs.cache
+c:\users\nicky\documents\s&box projects\swrp\code\obj\Debug\swrp.AssemblyInfo.cs
+c:\users\nicky\documents\s&box projects\swrp\code\obj\Debug\swrp.csproj.CoreCompileInputs.cache

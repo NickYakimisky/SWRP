@@ -1,0 +1,17 @@
+HUD
+{
+    pointer-events: none;
+
+    .pointer-visible
+    {
+        pointer-events: all;
+    }
+
+    &.camera-movement
+    {
+        .pointer-visible
+        {
+            pointer-events: none;
+        }
+    }
+}
