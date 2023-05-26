@@ -3,4 +3,4 @@
 [![Project Status: WIP  – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 
 # SWRP
-A brief test of the S&amp;Box API. Purely for lerning as this is my first project using C# and .NET. Pre-cursor to a creating a more fun gamemode. 
+A brief test of the S&amp;Box API. Purely for learning as this is my first project using C# and .NET. Pre-cursor to a creating a more fun gamemode. 
