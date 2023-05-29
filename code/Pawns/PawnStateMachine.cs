@@ -10,7 +10,6 @@ namespace SWRP.Pawns
 	public class PawnStateMachine
 	{
 		private BaseState _currentState;
-		protected PawnController _controller;
 
 		public void SwitchState(BaseState newState)
 		{
