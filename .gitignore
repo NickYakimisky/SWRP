@@ -1,0 +1,7 @@
+
+.addon
+code/SWRP.csproj
+*.csproj
+code/SWRP.csproj
+*.old
+code/obj/*
