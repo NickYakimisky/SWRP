@@ -8,7 +8,7 @@ namespace SWRP
 {
 	public class GroundedState : BaseState
 	{
-		public GroundedState(PawnStateMachine stateMachine, PawnController controller) : base(stateMachine, controller)
+		public GroundedState(PawnStateMachine stateMachine) : base(stateMachine)
 		{
 		}
 		public override void Enter()
@@ -23,48 +23,49 @@ namespace SWRP
 
 		public override void Simulate()
 		{
-			Controller.ControllerEvents.Clear();
+			StateMachine.Controller.ControllerEvents.Clear();
 
-			var movement = Controller.Pawn.InputDirection.Normal;
-			var angles = Controller.Pawn.ViewAngles.WithPitch(0);
+			var movement = StateMachine.Controller.Pawn.InputDirection.Normal;
+			var angles = StateMachine.Controller.Pawn.ViewAngles.WithPitch(0);
 			var moveVector = Rotation.From(angles) * movement * 320f;
 			var ground = CheckForGround();
 
 			if (ground.IsValid())
 			{
-				if (!Grounded)
+				StateMachine.JumpCount = 0;
+				if (!StateMachine.Grounded)
 				{
-					Controller.Pawn.Velocity = Controller.Pawn.Velocity.WithZ(0);
-					Controller.AddEvent("grounded");
+					StateMachine.Controller.Pawn.Velocity = StateMachine.Controller.Pawn.Velocity.WithZ(0);
+					StateMachine.Controller.AddEvent("grounded");
 				}
 
-				Controller.Pawn.Velocity = Accelerate(Controller.Pawn.Velocity, moveVector.Normal, moveVector.Length, 200.0f * (Input.Down("run") ? 2.5f : 1f), 7.5f);
-				Controller.Pawn.Velocity = ApplyFriction(Controller.Pawn.Velocity, 4.0f);
+				StateMachine.Controller.Pawn.Velocity = Accelerate(StateMachine.Controller.Pawn.Velocity, moveVector.Normal, moveVector.Length, 200.0f * (Input.Down("run") ? 2.5f : 1f), 7.5f);
+				StateMachine.Controller.Pawn.Velocity = ApplyFriction(StateMachine.Controller.Pawn.Velocity, 4.0f);
 			}
 			else
 			{
-				Controller.Pawn.Velocity = Accelerate(Controller.Pawn.Velocity, moveVector.Normal, moveVector.Length, 100, 20f);
-				Controller.Pawn.Velocity += Vector3.Down * Gravity * Time.Delta;
+				StateMachine.Controller.Pawn.Velocity = Accelerate(StateMachine.Controller.Pawn.Velocity, moveVector.Normal, moveVector.Length, 100, 20f);
+				StateMachine.Controller.Pawn.Velocity += Vector3.Down * StateMachine.Gravity * Time.Delta;
 			}
 
-			var mh = new MoveHelper(Controller.Pawn.Position, Controller.Pawn.Velocity);
-			mh.Trace = mh.Trace.Size(Controller.Pawn.Hull).Ignore(Controller.Pawn);
+			var mh = new MoveHelper(StateMachine.Controller.Pawn.Position, StateMachine.Controller.Pawn.Velocity);
+			mh.Trace = mh.Trace.Size(StateMachine.Controller.Pawn.Hull).Ignore(StateMachine.Controller.Pawn);
 
-			if (mh.TryMoveWithStep(Time.Delta, StepSize) > 0)
+			if (mh.TryMoveWithStep(Time.Delta, StateMachine.StepSize) > 0)
 			{
-				if (Grounded)
+				if (StateMachine.Grounded)
 				{
 					mh.Position = StayOnGround(mh.Position);
 				}
-				Controller.Pawn.Position = mh.Position;
-				Controller.Pawn.Velocity = mh.Velocity;
+				StateMachine.Controller.Pawn.Position = mh.Position;
+				StateMachine.Controller.Pawn.Velocity = mh.Velocity;
 			}
 
-			Controller.Pawn.GroundEntity = ground;
+			StateMachine.Controller.Pawn.GroundEntity = ground;
 
-			if (Grounded && Input.Pressed("jump"))
+			if (Input.Pressed("jump"))
 			{
-				StateMachine.SwitchState(new JumpState(StateMachine, Controller));
+				StateMachine.SwitchState(new JumpState(StateMachine));
 			}
 		}
 	}

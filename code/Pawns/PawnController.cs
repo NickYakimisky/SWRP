@@ -9,13 +9,14 @@ namespace SWRP.Pawns;
 /// </summary>
 public class PawnController : EntityComponent<Pawn>, ISingletonComponent
 {
-	private PawnStateMachine _stateMachine = new();
+	private PawnStateMachine _stateMachine;
 	public Pawn Pawn => Entity;
 
 	public HashSet<string> ControllerEvents = new(StringComparer.OrdinalIgnoreCase);
 	public PawnController()
 	{
-		_stateMachine.SwitchState(new GroundedState(_stateMachine, this));
+		_stateMachine= new(this);
+		_stateMachine.SwitchState(new GroundedState(_stateMachine));
 	}
 	public void Simulate(IClient cl)
 	{

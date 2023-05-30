@@ -10,7 +10,8 @@ namespace SWRP.Pawns
 {
 	public class JumpState : BaseState
 	{
-		public JumpState(PawnStateMachine stateMachine, PawnController controller) : base(stateMachine, controller)
+
+		public JumpState(PawnStateMachine stateMachine) : base(stateMachine)
 		{
 		}
 
@@ -26,20 +27,24 @@ namespace SWRP.Pawns
 
 		public override void Simulate()
 		{
-			DoJump(); 
-			StateMachine.SwitchState(new GroundedState(StateMachine, Controller));
+			DoJump();
+			StateMachine.SwitchState(new GroundedState(StateMachine));
 		}
 
 		protected void DoJump()
 		{
-			Controller.Pawn.Velocity = ApplyJump(Controller.Pawn.Velocity, "jump");
+			if (StateMachine.JumpCount < 2)
+			{
+				StateMachine.Controller.Pawn.Velocity = ApplyJump(StateMachine.Controller.Pawn.Velocity, "jump");
+				StateMachine.JumpCount++;
+			}
 		}
 
 		protected Vector3 ApplyJump(Vector3 input, string jumpType)
 		{
-			Controller.AddEvent(jumpType);
+			StateMachine.Controller.AddEvent(jumpType);
 
-			return input + Vector3.Up * JumpSpeed;
+			return input + Vector3.Up * StateMachine.JumpSpeed;
 		}
 
 	}

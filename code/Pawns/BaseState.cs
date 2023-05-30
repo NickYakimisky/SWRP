@@ -10,16 +10,10 @@ namespace SWRP.Pawns
 	public abstract class BaseState
 	{
 		protected PawnStateMachine StateMachine;
-		protected PawnController Controller;
-		protected int StepSize => 24;
-		protected int GroundAngle => 45;
-		protected int JumpSpeed => 300;
-		protected float Gravity => 800f;
-		protected bool Grounded => Controller.Pawn.GroundEntity.IsValid();
-		public BaseState(PawnStateMachine stateMachine, PawnController controller) // Set the StateMachine
+
+		public BaseState(PawnStateMachine stateMachine) // Set the StateMachine
 		{
 			StateMachine = stateMachine;
-			Controller = controller;
 		}
 
 		public abstract void Enter(); // What we do upon Entering a State
@@ -28,15 +22,15 @@ namespace SWRP.Pawns
 
 		protected Entity CheckForGround()
 		{
-			if (Controller.Pawn.Velocity.z > 100f)
+			if (StateMachine.Controller.Pawn.Velocity.z > 100f)
 				return null;
 
-			var trace = Controller.Pawn.TraceBBox(Controller.Pawn.Position, Controller.Pawn.Position + Vector3.Down, 2f);
+			var trace = StateMachine.Controller.Pawn.TraceBBox(StateMachine.Controller.Pawn.Position, StateMachine.Controller.Pawn.Position + Vector3.Down, 2f);
 
 			if (!trace.Hit)
 				return null;
 
-			if (trace.Normal.Angle(Vector3.Up) > GroundAngle)
+			if (trace.Normal.Angle(Vector3.Up) > StateMachine.GroundAngle)
 				return null;
 
 			return trace.Entity;
@@ -91,19 +85,19 @@ namespace SWRP.Pawns
 		protected Vector3 StayOnGround(Vector3 position)
 		{
 			var start = position + Vector3.Up * 2;
-			var end = position + Vector3.Down * StepSize;
+			var end = position + Vector3.Down * StateMachine.StepSize;
 
 			// See how far up we can go without getting stuck
-			var trace = Controller.Pawn.TraceBBox(position, start);
+			var trace = StateMachine.Controller.Pawn.TraceBBox(position, start);
 			start = trace.EndPosition;
 
 			// Now trace down from a known safe position
-			trace = Controller.Pawn.TraceBBox(start, end);
+			trace = StateMachine.Controller.Pawn.TraceBBox(start, end);
 
 			if (trace.Fraction <= 0) return position;
 			if (trace.Fraction >= 1) return position;
 			if (trace.StartedSolid) return position;
-			if (Vector3.GetAngle(Vector3.Up, trace.Normal) > GroundAngle) return position;
+			if (Vector3.GetAngle(Vector3.Up, trace.Normal) > StateMachine.GroundAngle) return position;
 
 			return trace.EndPosition;
 		}
