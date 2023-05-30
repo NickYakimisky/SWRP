@@ -10,10 +10,12 @@ namespace SWRP.Pawns
 	public abstract class BaseState
 	{
 		protected PawnStateMachine StateMachine;
+		protected PawnStateFactory StateFactory;
 
-		public BaseState(PawnStateMachine stateMachine) // Set the StateMachine
+		public BaseState(PawnStateMachine stateMachine, PawnStateFactory stateFactory) // Set the StateMachine
 		{
 			StateMachine = stateMachine;
+			StateFactory = stateFactory;
 		}
 
 		public abstract void Enter(); // What we do upon Entering a State

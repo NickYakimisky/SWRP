@@ -8,7 +8,7 @@ namespace SWRP
 {
 	public class GroundedState : BaseState
 	{
-		public GroundedState(PawnStateMachine stateMachine) : base(stateMachine)
+		public GroundedState(PawnStateMachine stateMachine, PawnStateFactory stateFactory) : base(stateMachine, stateFactory)
 		{
 		}
 		public override void Enter()
@@ -65,7 +65,7 @@ namespace SWRP
 
 			if (Input.Pressed("jump"))
 			{
-				StateMachine.SwitchState(new JumpState(StateMachine));
+				StateMachine.SwitchState(StateFactory.GetState(States.Jump));
 			}
 		}
 	}

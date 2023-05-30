@@ -11,7 +11,7 @@ namespace SWRP.Pawns
 	public class JumpState : BaseState
 	{
 
-		public JumpState(PawnStateMachine stateMachine) : base(stateMachine)
+		public JumpState(PawnStateMachine stateMachine, PawnStateFactory stateFactory) : base(stateMachine, stateFactory)
 		{
 		}
 
@@ -28,7 +28,7 @@ namespace SWRP.Pawns
 		public override void Simulate()
 		{
 			DoJump();
-			StateMachine.SwitchState(new GroundedState(StateMachine));
+			StateMachine.SwitchState(StateFactory.GetState(States.Grounded));
 		}
 
 		protected void DoJump()
