@@ -10,15 +10,13 @@ namespace SWRP.Pawns;
 public class PawnController : EntityComponent<Pawn>, ISingletonComponent
 {
 	private PawnStateMachine _stateMachine;
-	public PawnStateFactory StateFactory { get; }
 	public Pawn Pawn => Entity;
 
 	public HashSet<string> ControllerEvents = new(StringComparer.OrdinalIgnoreCase);
 	public PawnController()
 	{
-		_stateMachine= new PawnStateMachine(this);
-		StateFactory = new PawnStateFactory(_stateMachine);
-		_stateMachine.SwitchState(StateFactory.GetState("Grounded"));
+		_stateMachine= new(this);
+		_stateMachine.SwitchState(new GroundedState(_stateMachine));
 	}
 	public void Simulate(IClient cl)
 	{
