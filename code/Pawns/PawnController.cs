@@ -15,7 +15,7 @@ public class PawnController : EntityComponent<Pawn>, ISingletonComponent
 	public HashSet<string> ControllerEvents = new(StringComparer.OrdinalIgnoreCase);
 	public PawnController()
 	{
-		_stateMachine.SwitchState(new IdleState(_stateMachine, this));
+		_stateMachine.SwitchState(new GroundedState(_stateMachine, this));
 	}
 	public void Simulate(IClient cl)
 	{

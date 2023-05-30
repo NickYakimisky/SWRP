@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sandbox;
 using SWRP.Pawns;
 
 namespace SWRP.Pawns
@@ -12,6 +13,7 @@ namespace SWRP.Pawns
 		public JumpState(PawnStateMachine stateMachine, PawnController controller) : base(stateMachine, controller)
 		{
 		}
+
 		public override void Enter()
 		{
 			//Log.Info("Entering Jump State");
@@ -24,8 +26,20 @@ namespace SWRP.Pawns
 
 		public override void Simulate()
 		{
-			DoJump();
-			StateMachine.SwitchState(new IdleState(StateMachine, Controller));
+			DoJump(); 
+			StateMachine.SwitchState(new GroundedState(StateMachine, Controller));
+		}
+
+		protected void DoJump()
+		{
+			Controller.Pawn.Velocity = ApplyJump(Controller.Pawn.Velocity, "jump");
+		}
+
+		protected Vector3 ApplyJump(Vector3 input, string jumpType)
+		{
+			Controller.AddEvent(jumpType);
+
+			return input + Vector3.Up * JumpSpeed;
 		}
 
 	}

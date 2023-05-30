@@ -6,19 +6,19 @@ using PawnController = SWRP.Pawns.PawnController;
 
 namespace SWRP
 {
-	public class IdleState : BaseState
+	public class GroundedState : BaseState
 	{
-		public IdleState(PawnStateMachine stateMachine, PawnController controller) : base(stateMachine, controller)
+		public GroundedState(PawnStateMachine stateMachine, PawnController controller) : base(stateMachine, controller)
 		{
 		}
 		public override void Enter()
 		{
-			//Log.Info("Entering Idle State");
+			//Log.Info("Entering Grounded State");
 		}
 
 		public override void Exit()
 		{
-			//Log.Info("Exiting Idle State");
+			//Log.Info("Exiting Grounded State");
 		}
 
 		public override void Simulate()
@@ -62,7 +62,7 @@ namespace SWRP
 
 			Controller.Pawn.GroundEntity = ground;
 
-			if (Input.Pressed("jump"))
+			if (Grounded && Input.Pressed("jump"))
 			{
 				StateMachine.SwitchState(new JumpState(StateMachine, Controller));
 			}

@@ -26,14 +26,6 @@ namespace SWRP.Pawns
 		public abstract void Exit(); // What we do upon Exiting a State
 		public abstract void Simulate(); // What we do in the State
 
-		protected void DoJump()
-		{
-			if (Grounded)
-			{
-				Controller.Pawn.Velocity = ApplyJump(Controller.Pawn.Velocity, "jump");
-			}
-		}
-
 		protected Entity CheckForGround()
 		{
 			if (Controller.Pawn.Velocity.z > 100f)
@@ -94,13 +86,6 @@ namespace SWRP.Pawns
 			input += wishdir * accelspeed;
 
 			return input;
-		}
-
-		protected Vector3 ApplyJump(Vector3 input, string jumpType)
-		{
-			Controller.AddEvent(jumpType);
-
-			return input + Vector3.Up * JumpSpeed;
 		}
 
 		protected Vector3 StayOnGround(Vector3 position)
